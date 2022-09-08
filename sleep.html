@@ -24,7 +24,6 @@
         }
         function increaseVolume()
         {
-            console.log(x.volume)
             x.volume=x.volume+.01;
             clearTimeout(timeout); 
             if(x.volume < .99){
@@ -35,7 +34,6 @@
         {
             x.volume = 0
             x.play();
-            console.log("start");
             increaseVolume();
         }
         function setAlarm()
@@ -49,7 +47,6 @@
             clearTimeout(timeout); 
             var timeLater=new Date([date,document.getElementById("time").value]);
             var timeNow = new Date().getTime()
-            console.log(date, timeLater,timeNow,timeLater-timeNow,60000*minutes)
             timeout=setTimeout(alarm, timeLater-timeNow-60000*minutes);
         }
         document.getElementById("timesubmit").addEventListener("click", setAlarm);
