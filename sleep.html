@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Sleep</title>
+    </head>
+    <body>
+        <label for="url">Audio File Link:</label><input type="url" id="url" placeholder="Enter the url of an audio file"><br>
+        <button id="urlsubmit">Change url</button><br><br>
+        <label for="mins">Number of minutes for which the volume should increase before being at full volume:</label><input type="number" id="mins" value="0"><br>
+        <label for="time">Full alarm time:</label><input type="time" id="time"><br>
+        <button id="timesubmit">Set Alarm</button>
+        <script>
+        var x = document.createElement("AUDIO");
+        var timeout
+        var minutes
+        x.setAttribute("src","https://assets.mixkit.co/sfx/preview/mixkit-morning-clock-alarm-1003.mp3");
+        x.setAttribute("loop","loop")
+        x.volume=0
+        function changeSource()
+        {
+            var source=document.getElementById("source");
+            x.setAttribute("src",document.getElementById("url").value);
+        }
+        function increaseVolume()
+        {
+            console.log(x.volume)
+            x.volume=x.volume+.01;
+            clearTimeout(timeout); 
+            if(x.volume < .99){
+                timeout=setTimeout(increaseVolume, 600*minutes);
+            }
+        }
+        function alarm()
+        {
+            x.volume = 0
+            x.play();
+            console.log("start");
+            increaseVolume();
+        }
+        function setAlarm()
+        {
+            minutes = document.getElementById("mins").value
+            var today = new Date();
+            var dd = String(today.getDate()).padStart(2, '0');
+            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            var yyyy = String(today.getFullYear());
+            var date = yyyy+"-"+mm+"-"+dd
+            clearTimeout(timeout); 
+            var timeLater=new Date([date,document.getElementById("time").value]);
+            var timeNow = new Date().getTime()
+            console.log(date, timeLater,timeNow,timeLater-timeNow,60000*minutes)
+            timeout=setTimeout(alarm, timeLater-timeNow-60000*minutes);
+        }
+        document.getElementById("timesubmit").addEventListener("click", setAlarm);
+        document.getElementById("urlsubmit").addEventListener("click", changeSource);
+        </script>
+    </body>
+</html>
